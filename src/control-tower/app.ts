@@ -4,12 +4,9 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import log from '../utils/logger';
 import { version } from '../../package.json';
+import config from "../config/default";
 
 import socket from './socket';
-
-const port = 4000;
-const host = 'localhost';
-const corsOrigin = "*";
 
 const app = express();
 
@@ -17,7 +14,7 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
 	cors: {
-		origin: corsOrigin,
+		origin: config.corsOrigin,
 		credentials: true,
 	},
 });
@@ -26,9 +23,9 @@ app.get('/', (_, res) =>
 	res.send(`Server is up and running version ${version}`)
 );
 
-httpServer.listen(port, host, () => {
+httpServer.listen(config.port, config.host, () => {
 	log.info(`🚀 Server version ${version} is listening 🚀`);
-	log.info(`http://${host}:${port}`);
+	log.info(`http://${config.host}:${config.port}`);
 
 	socket({ io });
 });
