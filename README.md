@@ -11,3 +11,7 @@
 ## Lancer monde Cynthia
 
 `npx ts-node src/worlds/cynthia-world/app.ts`
+
+## Ressources
+
+[projet GitHub de chat en TS](https://github.com/TomDoesTech/Realtime-Chat-Application/blob/main/client/containers/Messages.tsx)
