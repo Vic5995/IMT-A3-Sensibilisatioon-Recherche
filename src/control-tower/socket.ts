@@ -1,8 +1,9 @@
 import { Server, Socket } from 'socket.io';
 import log from '../utils/logger';
 import EVENTS from '../config/events';
+import { ControlTower } from './ControlTower';
 
-const register = new Map<String, String>();
+ControlTower.getInstance();
 
 const socket = ({ io }: { io: Server }) => {
   log.info(`Sockets enable`);
@@ -14,13 +15,21 @@ const socket = ({ io }: { io: Server }) => {
 
     socket.on(EVENTS.CONTROL_TOWER.GENERAL.register, (socketId, name) => {
   
-      register.set(socketId, name);
+      ControlTower.registerWorld(socketId, name);
   
-      log.info(`${name} (id: ${socketId}) is registered!`)
+      log.info(`🎉 ${name} (id: ${socketId}) is registered!`);
+      log.info(`🔢 World(s) available: ${ControlTower.getNumberOfWorld()}`);
   
       socket.emit(EVENTS.CONTROL_TOWER.GENERAL.welcome,
         `\n\n🌍 Welcome to The Universe! \nid: ${socketId} \nname: ${name} \n✅ Registered Successfully!\n`);
-    })
+    });
+
+    socket.on(EVENTS.disconnect, (_) => {
+      const leavingSocket = ControlTower.getWorld(socket.id);
+      ControlTower.deleteWorld(socket.id);
+      log.info(`👋 ${leavingSocket} (id: ${socket.id}) is gone!`);
+      log.info(`🔢 World(s) available: ${ControlTower.getNumberOfWorld()}`);
+    });
   });
 
   
