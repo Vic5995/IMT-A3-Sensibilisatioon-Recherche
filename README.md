@@ -1,17 +1,22 @@
 # IMT-A3-Sensibilisatioon-Recherche
 
-## Lancer le server
+`npm install`
+
+Dans 4 terminaux différents placés à la racine du projet
+
+## 1 Lancer le server
 
 `npm run tower`
 
-## Lancer monde Vic
-
-`npx ts-node src/worlds/vic-world/app.ts`
-
-## Lancer monde Cynthia
+## 2 Lancer Avatar Cynthia (observateur)
 
 `npx ts-node src/worlds/cynthia-world/app.ts`
 
-## Ressources
+## 3 Lancer Avatar Vic (observateur)
 
-[projet GitHub de chat en TS](https://github.com/TomDoesTech/Realtime-Chat-Application/blob/main/client/containers/Messages.tsx)
+`npx ts-node src/worlds/vic-world/deadApp.ts`
+
+## 4 Lancer Avatar Vic (voyageur)
+
+`npx ts-node src/worlds/vic-world/app.ts`
+
