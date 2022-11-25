@@ -9,6 +9,7 @@ const EVENTS = {
       register: 'register'
     },
     AUTHORIZATION: {
+      unvalaible: 'unvalaible',
       allowed: 'allowed',
       forbidden: 'forbidden',
     },

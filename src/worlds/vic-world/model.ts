@@ -2,10 +2,12 @@ import { Avatar, World } from '../../model/model';
 
 export class AvatarVic extends Avatar {
   pseudo: string;
+  addressBook: string[];
 
-  constructor(id: string, addressWorld: string, pseudo: string) {
-    super(id, addressWorld);
+  constructor(id: string, nameWorld: string, pseudo: string) {
+    super(id, nameWorld);
     this.pseudo = pseudo;
+    this.addressBook = [];
   }
 }
 
@@ -20,4 +22,6 @@ export class WorldVic extends World {
   registerAvatar(avatar: AvatarVic) {
     this.register.push(avatar);
   }
+
+  
 }

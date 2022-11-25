@@ -38,3 +38,18 @@ socket.on(EVENTS.CONTROL_TOWER.GENERAL.request, () => {
 socket.on(EVENTS.CONTROL_TOWER.GENERAL.welcome, (message) => {
   log.info(message);
 });
+
+
+/**
+ * Arrivée d'un nouvel avatar
+ */
+socket.on(EVENTS.WORLD.TRAVEL.arriving_dest, (message) => {
+  log.info(message);
+});
+
+/**
+ * Départ d'un avatar étranger
+ */
+socket.on(EVENTS.WORLD.TRAVEL.leaving_dest, (message) => {
+  log.info(message);
+})
