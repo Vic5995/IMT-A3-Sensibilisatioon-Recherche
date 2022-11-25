@@ -3,7 +3,8 @@ import EVENTS from '../../config/events';
 import log from '../../utils/logger';
 import config from '../../config/default';
 import { v4 as uuidv4 } from 'uuid';
-import { AvatarVic, WorldVic } from './model';
+import { AvatarVic } from './model';
+import { AvatarCynthia } from '../cynthia-world/model';
 
 /**
  * ÉTAPE 0 :
@@ -13,11 +14,7 @@ import { AvatarVic, WorldVic } from './model';
 
 const socket = io(`http://${config.host}:${config.port}`);
 
-const WORLD = new WorldVic(uuidv4(), 'Vic World');
-
-const avatar1 = new AvatarVic(uuidv4(), WORLD.name, 'Avatar Test');
-
-WORLD.registerAvatar(avatar1);
+const avatar1 = new AvatarVic(uuidv4(), "Vic World", 'Avatar Test');
 
 socket.on(EVENTS.connect, () => {
   log.info(`id: ${socket.id} connected!`);
@@ -30,7 +27,7 @@ socket.on(EVENTS.connect, () => {
 socket.on(EVENTS.CONTROL_TOWER.GENERAL.request, () => {
   log.info('📤 Sending informations...');
 
-  socket.emit(EVENTS.CONTROL_TOWER.GENERAL.register, socket.id, 'Vic World');
+  socket.emit(EVENTS.CONTROL_TOWER.GENERAL.register, avatar1);
 });
 
 /**
@@ -42,7 +39,7 @@ socket.on(EVENTS.CONTROL_TOWER.GENERAL.welcome, (message) => {
   log.info(message);
 
   log.info(`🧐 ${avatar1.pseudo} asking to visit Cynthia World...`);
-  socket.emit(EVENTS.WORLD.AUTHORIZATION.request, 'Cynthia World'); // ajouter les information de l'avatar
+  socket.emit(EVENTS.WORLD.AUTHORIZATION.request, avatar1, 'Cynthia World'); // ajouter les information de l'avatar
 });
 
 /**
@@ -52,6 +49,10 @@ socket.on(EVENTS.CONTROL_TOWER.GENERAL.welcome, (message) => {
 socket.on(EVENTS.CONTROL_TOWER.AUTHORIZATION.unvalaible, (message) => {
   log.error(message);
 });
+
+socket.on(EVENTS.CONTROL_TOWER.AUTHORIZATION.forbidden, (message) => {
+  log.error(message);
+})
 
 socket.on(
   EVENTS.CONTROL_TOWER.AUTHORIZATION.allowed,
@@ -64,10 +65,11 @@ socket.on(
      * ÉTAPE 3 : départ pour le monde de destination
      */
     // préparation de l'avatar pour le changement de monde
+    const tmpAvatar = AvatarCynthia.toCynthiaWorld(avatar1);
     socket.emit(
       EVENTS.WORLD.TRAVEL.leaving_origin,
       destinationName,
-      avatar1.pseudo
+      tmpAvatar
     );
   }
 );
@@ -75,9 +77,8 @@ socket.on(
 socket.on(EVENTS.WORLD.TRAVEL.arriving_dest, (destinationName) => {
   socket.emit(
     EVENTS.WORLD.TRAVEL.leaving_dest,
-    avatar1.pseudo,
-    destinationName,
-    avatar1.nameWorld
+    avatar1,
+    destinationName
   );
 });
 

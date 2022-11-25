@@ -1,3 +1,6 @@
+import { AvatarCynthia } from "../worlds/cynthia-world/model";
+import { AvatarVic } from "../worlds/vic-world/model";
+
 export abstract class Avatar {
   id: string;
   nameWorld: string;
@@ -16,4 +19,12 @@ export abstract class World {
     this.id = id;
     this.name = name;
   }
+
+  abstract registerAvatar(avatar: Avatar): void;
+
+  abstract deleteAvatar(avatar: Avatar): void;
+
+  abstract isValidAvatar(avatar: Avatar): boolean;
+
+  abstract getAvatar(avatarId: string): Avatar | undefined;
 }
