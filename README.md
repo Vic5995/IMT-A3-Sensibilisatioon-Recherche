@@ -1,4 +1,5 @@
 # IMT-A3-Sensibilisatioon-Recherche
+### Cynthia ANDRIAMPARIVONY & Victoire LENGLART
 
 `npm install`
 
